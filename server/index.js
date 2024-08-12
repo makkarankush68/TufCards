@@ -223,9 +223,7 @@ app.put("/flashcards/:id", authenticateJWT, async (req, res) => {
 
 // Delete a flashcard
 app.delete("/flashcards/:id", authenticateJWT, async (req, res) => {
-  console.log("Delete flashcard");
   const { id } = req.params;
-  console.log("Delete flashcard", id);
   try {
     const flashcard = await prisma.flashcard.findUnique({
       where: { id: Number(id) },

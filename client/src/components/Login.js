@@ -17,8 +17,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Username:", formData.username);
-    console.log("Password:", formData.password);
     await loginAdmin(formData);
   };
 

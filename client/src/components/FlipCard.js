@@ -1,51 +1,41 @@
 "use client";
 import { useState } from "react";
 import ReactCardFlip from "react-card-flip";
-const FlipCard = () => {
-  const [isFlipped, setIsFlipped] = useState(false);
 
+const FlipCard = ({ card }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
   const handleClick = () => {
     setIsFlipped(!isFlipped);
   };
+
+  if (!card) return <h1 className="text-center">No cards found</h1>;
+
   return (
     <div className="m-4 p-4 border border-slate-500 rounded-lg max-w-[100vw] overflow-clip ">
       <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
         {/* Front side */}
         <div className="max-w-screen" onClick={handleClick}>
           <div>
-            <h1>What is useContext?</h1>
+            <h1 className="text-2xl font-bold pl-2">{card.question}</h1>
             <div className="grid  grid-cols-1 sm:grid-cols-2 text-center ">
-              <span>a) Option</span>
-              <span>b) Option</span>
-              <span>c) Option</span>
-              <span>d) Option</span>
+              {card.options.map((option, idx) => (
+                <span
+                  key={idx}
+                  className="m-2 p-2 bg-gray-700 text-white rounded-lg"
+                >
+                  {option.text}
+                </span>
+              ))}
             </div>
           </div>
         </div>
         {/* Back side */}
         <div
-          className="max-w-[100vw] max-h-[70vh] overflow-y-scroll"
+          className="max-w-[100vw] min-h-7 max-h-[70vh] overflow-y-auto"
           onClick={handleClick}
         >
-          <h2>UseContext Hook</h2>
-          <p className="max-h-[100%]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur.
-          </p>
+          <h2 className="text-2xl font-bold">{card?.answer[0]?.heading}</h2>
+          <p className="max-h-[100%]">{card?.answer[0]?.paragraph}</p>
         </div>
       </ReactCardFlip>
     </div>
