@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import AppContext from "@/context/AppContext";
+import { useContext, useState } from "react";
 import ReactCardFlip from "react-card-flip";
 
 const FlipCard = ({ card }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const { isFlipped, setIsFlipped } = useContext(AppContext);
   const handleClick = () => {
     setIsFlipped(!isFlipped);
   };

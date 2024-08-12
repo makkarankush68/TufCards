@@ -4,19 +4,27 @@ import FlipCard from "./FlipCard";
 import AppContext from "@/context/AppContext";
 
 const Main = () => {
-  const { flashcards, idx, setIdx } = useContext(AppContext);
+  const { flashcards, idx, setIdx, setIsFlipped } = useContext(AppContext);
   if (!flashcards) return <h1 className="text-center">No cards found</h1>;
   return (
     <>
-      <div className="font-bold text-center w-full text-3xl p-2">Card #{idx+1}</div>
+      <div className="font-bold text-center w-full text-3xl p-2">
+        Card #{idx + 1}
+      </div>
       <div className="mx-auto my-auto md:w-[80vw] w-[100vw] h-fit max-h-[90vh]">
-        <FlipCard card={flashcards ? flashcards[idx] : null} />
+        {flashcards &&
+          flashcards.map((card, i) => (
+            <div className={i == idx ? "" : "hidden"}>
+              <FlipCard key={i} card={card} />
+            </div>
+          ))}
       </div>
       <div className="grid grid-cols-2 ">
         <button
           onClick={() => {
             if (idx > 0) {
               setIdx(idx - 1);
+              setIsFlipped(false);
             }
           }}
           disabled={idx === 0}
@@ -32,6 +40,7 @@ const Main = () => {
           onClick={() => {
             if (idx < flashcards.length - 1) {
               setIdx(idx + 1);
+              setIsFlipped(false);
             }
           }}
           className={

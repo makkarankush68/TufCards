@@ -7,6 +7,8 @@ export const AppProvider = ({ children }) => {
   const [flashcards, setFlashcards] = useState(null);
   const [loading, setLoading] = useState(true);
   const [idx, setIdx] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+
 
   const fetchCards = async () => {
     const res = await superfetch("flashcards");
@@ -23,6 +25,8 @@ export const AppProvider = ({ children }) => {
     loading,
     idx,
     setIdx,
+    isFlipped,
+    setIsFlipped,
   };
   return (
     <AppContext.Provider value={contextData}>{children}</AppContext.Provider>
