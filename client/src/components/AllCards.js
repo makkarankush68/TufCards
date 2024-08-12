@@ -2,6 +2,7 @@ import AppContext from "@/context/AppContext";
 import { superfetch } from "@/libs/utils";
 import { useContext, useEffect, useState } from "react";
 import AllCardsList from "./AllCardsList";
+import CardForm from "./CardForm";
 
 const AllCards = () => {
   const { flashcards, fetchCards } = useContext(AppContext);
@@ -10,7 +11,6 @@ const AllCards = () => {
   useEffect(() => {
     if (edit) {
       const card = flashcards.find((card) => card.id === edit);
-      console.log("Edit card:", card);
       setFormData({
         question: card.question,
         options1: card.options[0]?.text || "",
@@ -88,97 +88,19 @@ const AllCards = () => {
   };
 
   return (
-    <div className="p-2 m-2">
+    <div className="md:p-2 md:m-2">
       {!edit ? (
         <AllCardsList setEdit={setEdit} />
       ) : (
-        <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
-          <label className="text-white flex flex-col">
-            Question:
-            <textarea
-              type="text"
-              value={formData.question}
-              name="question"
-              onChange={handleChange}
-              className="bg-gray-700 rounded-md"
-            />
-          </label>
-          {formError?.question && (
-            <span className="text-red-500">{formError.question}</span>
-          )}
-          <label className="mt-2 text-white flex flex-col">
-            Options (fill as much needed):
-            <div className="grid grid-cols-2 gap-2">
-              <input
-                type="text"
-                value={formData.options1}
-                name="options1"
-                onChange={handleChange}
-                className="bg-gray-700 rounded-md"
-              />
-              <input
-                type="text"
-                value={formData.options2}
-                name="options2"
-                onChange={handleChange}
-                className="bg-gray-700 rounded-md"
-              />
-              <input
-                type="text"
-                value={formData.options3}
-                name="options3"
-                onChange={handleChange}
-                className="bg-gray-700 rounded-md"
-              />
-              <input
-                type="text"
-                value={formData.options4}
-                name="options4"
-                onChange={handleChange}
-                className="bg-gray-700 rounded-md"
-              />
-            </div>
-          </label>
-          <br />
-          <label className="text-white flex flex-col">
-            Answer Heading:
-            <textarea
-              type="text"
-              value={formData.heading}
-              name="heading"
-              onChange={handleChange}
-              className="bg-gray-700 rounded-md"
-            />
-          </label>
-          {formError?.heading && (
-            <span className="text-red-500">{formError.heading}</span>
-          )}
-          <label className="text-white flex flex-col">
-            Paragraph:
-            <textarea
-              type="text"
-              value={formData.paragraph}
-              name="paragraph"
-              onChange={handleChange}
-              className="bg-gray-700 rounded-md"
-            />
-          </label>
-          <br />
-          <div className="flex justify-around">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Edit Card
-            </button>
-            <button
-              onClick={() => setEdit(null)}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+        <div className="max-w-sm p-3 mx-auto mt-2">
+          <CardForm
+            formData={formData}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            formError={formError}
+            setEdit={setEdit}
+          />
+        </div>
       )}
     </div>
   );

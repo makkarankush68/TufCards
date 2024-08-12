@@ -1,4 +1,5 @@
 import AppContext from "@/context/AppContext";
+import { superfetch } from "@/libs/utils";
 import { useContext } from "react";
 
 const AllCardsList = ({ setEdit }) => {
@@ -17,19 +18,19 @@ const AllCardsList = ({ setEdit }) => {
       }
       const result = await res.json();
       fetchCards();
-      console.log("Flashcard deleted:", result);
+      console.log("Flashcard deleted successfully");
     } catch (error) {
       console.error("Error deleting flashcard:", error);
     }
   };
-
+  if (!flashcards) return <h1 className="text-center">//Loading Cards//</h1>;
   return (
     flashcards &&
     flashcards.map((card, idx) => (
       <div key={card.id}>
-        <div className="bg-gray-900 max-w-xl mx-auto p-2 m-2 rounded-lg shadow-lg shadow-slate-700">
+        <div className="bg-gray-900 max-w-xl mx-auto p-3 md:m-2 rounded-lg shadow-lg shadow-slate-700 ">
           <div>
-            <h2 className="text-white text-2xl">
+            <h2 className="text-white sm:text-2xl text-xl">
               {idx + 1}
               {") "}
               {card.question}

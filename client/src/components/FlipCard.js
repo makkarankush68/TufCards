@@ -12,7 +12,7 @@ const FlipCard = ({ card }) => {
   if (!card) return <h1 className="text-center">No cards found</h1>;
 
   return (
-    <div className="m-4 p-4 border border-slate-500 rounded-lg max-w-[100vw] overflow-clip ">
+    <div className="m-4 p-4 border border-slate-500 rounded-lg max-w-[100vw] overflow-clip cursor-pointer">
       <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
         {/* Front side */}
         <div className="max-w-screen" onClick={handleClick}>

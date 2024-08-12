@@ -45,7 +45,7 @@ export const AdminProvider = ({ children }) => {
 
   const logoutAdmin = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("admin");
     setAdmin(null);
     setToken(null);
   };

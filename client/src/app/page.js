@@ -10,13 +10,13 @@ export default function Home() {
         <div className="flex gap-6">
           <Link
             href={"/cards"}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center"
+            className="bg-blue-500 flex items-center hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center"
           >
             Get Started
           </Link>
           <Link
             href={"/admin"}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center"
+            className="bg-blue-500 flex items-center hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center"
           >
             Admin
           </Link>

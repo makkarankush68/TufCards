@@ -5,7 +5,7 @@ import AppContext from "@/context/AppContext";
 
 const Main = () => {
   const { flashcards, idx, setIdx, setIsFlipped } = useContext(AppContext);
-  if (!flashcards) return <h1 className="text-center">No cards found</h1>;
+  if (!flashcards) return <h1 className="text-center">//Loading Cards//</h1>;
   return (
     <>
       <div className="font-bold text-center w-full text-3xl p-2">
