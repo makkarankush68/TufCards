@@ -1,4 +1,4 @@
-import { BACKEND_URL, backendUrl } from "./consts";
+import { BACKEND_URL } from "./consts";
 
 export const superfetch = async (url, options) => {
   const token = localStorage.getItem("token");
@@ -10,9 +10,14 @@ export const superfetch = async (url, options) => {
       ...options?.headers,
       Authorization: token,
     };
-  } else {
+  } else if (!options) {
     options = {};
     options.headers = {
+      Authorization: token,
+    };
+  } else {
+    options.headers = {
+      ...options?.headers,
       Authorization: token,
     };
   }
