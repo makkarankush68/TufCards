@@ -56,6 +56,35 @@ const CardForm = ({
           />
         </div>
       </label>
+      <label className="text-white flex flex-col">
+        Correct Answer* :
+        <select
+          value={formData.correctOption}
+          name="correctOption"
+          onChange={handleChange}
+          className={
+            "bg-gray-700 rounded-md" +
+            (formError?.correctOption && " border border-red-500")
+          }
+        >
+          <option value="">Select correct answer</option>
+          {formData.options1 && (
+            <option value="options1">{formData.options1}</option>
+          )}
+          {formData.options2 && (
+            <option value="options2">{formData.options2}</option>
+          )}
+          {formData.options3 && (
+            <option value="options3">{formData.options3}</option>
+          )}
+          {formData.options4 && (
+            <option value="options4">{formData.options4}</option>
+          )}
+        </select>
+      </label>
+      {formError?.correctOption && (
+        <span className="text-red-500">{formError.correctOption}</span>
+      )}
       <br />
       <label className="text-white flex flex-col">
         Answer Heading* :

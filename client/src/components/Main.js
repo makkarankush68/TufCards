@@ -13,9 +13,9 @@ const Main = () => {
       </div>
       <div className="mx-auto my-auto md:w-[80vw] w-[100vw] h-fit max-h-[90vh]">
         {flashcards &&
-          flashcards.map((card, i) => (
-            <div className={i == idx ? "" : "hidden"}>
-              <FlipCard key={i} card={card} />
+          flashcards.map((card,i) => (
+            <div key={i} className={i == idx ? "" : "hidden"}>
+              <FlipCard card={card} />
             </div>
           ))}
       </div>

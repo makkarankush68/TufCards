@@ -17,6 +17,8 @@ const AllCards = () => {
         options2: card.options[1]?.text || "",
         options3: card.options[2]?.text || "",
         options4: card.options[3]?.text || "",
+        correctOption:
+          card.options.find((option) => option.isCorrect)?.text || "",
         heading: card.answer[0].heading,
         paragraph: card.answer[0].paragraph || "",
       });
@@ -29,6 +31,7 @@ const AllCards = () => {
     options2: "",
     options3: "",
     options4: "",
+    correctOption: "",
     heading: "",
     paragraph: "",
   });
@@ -36,13 +39,19 @@ const AllCards = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const validate = () => {
+  const validate = (formData) => {
     const errors = {};
     if (!formData.question || formData.question.trim() === "") {
       errors.question = "Question is required";
     }
     if (!formData.heading || formData.heading.trim() === "") {
       errors.heading = "Heading is required";
+    }
+    if (
+      formData.options.length !== 0 &&
+      (!formData.correctOption || formData.correctOption.trim() === "")
+    ) {
+      errors.correctOption = "Correct option is required";
     }
     if (Object.values(errors).length > 0) {
       setFormError(errors);
@@ -52,20 +61,24 @@ const AllCards = () => {
     return true;
   };
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) {
-      return;
-    }
     const newFormData = {};
     newFormData.question = formData.question;
     newFormData.options = [];
     for (let i = 1; i <= 4; i++) {
       if (formData[`options${i}`] && formData[`options${i}`].trim() !== "") {
-        newFormData.options.push({ text: formData[`options${i}`] });
+        newFormData.options.push({
+          text: formData[`options${i}`],
+          isCorrect: formData.correctOption === `options${i}` ? true : false,
+        });
       }
     }
+    newFormData.correctOption = formData.correctOption;
     newFormData.heading = formData.heading;
     newFormData.paragraph = formData.paragraph;
+    e.preventDefault();
+    if (!validate(newFormData)) {
+      return;
+    }
     try {
       const res = await superfetch(`flashcards/${edit}`, {
         method: "PUT",
