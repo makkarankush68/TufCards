@@ -5,7 +5,10 @@ import AppContext from "@/context/AppContext";
 
 const Main = () => {
   const { flashcards, idx, setIdx, setIsFlipped } = useContext(AppContext);
-  if (!flashcards) return <h1 className="text-center">//Loading Cards//</h1>;
+  if (!flashcards)
+    return <h1 className="text-center text-xl">//Loading Cards//</h1>;
+  if (flashcards.length === 0)
+    return <h1 className="text-center text-xl">No cards found</h1>;
   return (
     <>
       <div className="font-bold text-center w-full text-3xl p-2">
@@ -13,9 +16,9 @@ const Main = () => {
       </div>
       <div className="mx-auto my-auto md:w-[80vw] w-[100vw] h-fit max-h-[90vh]">
         {flashcards &&
-          flashcards.map((card,i) => (
-            <div key={i} className={i == idx ? "" : "hidden"}>
-              <FlipCard card={card} />
+          flashcards.map((card, i) => (
+            <div className={i == idx ? "" : "hidden"}>
+              <FlipCard key={i} card={card} />
             </div>
           ))}
       </div>
