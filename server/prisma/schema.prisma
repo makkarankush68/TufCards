@@ -26,6 +26,7 @@ model Option {
   flashcardId  Int
   text        String
   flashcard   Flashcard @relation("FlashcardOptions", fields: [flashcardId], references: [id])
+  isCorrect   Boolean   @default(false)
 }
 
 model Answer {

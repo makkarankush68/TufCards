@@ -29,7 +29,9 @@ flashcardRouter.post("/", async (req, res) => {
     !question ||
     !heading ||
     question.trim().length === 0 ||
-    heading.trim().length === 0
+    heading.trim().length === 0 ||
+    options.length > 4 ||
+    (options.length > 0 && options.some((option) => option.isCorrect))
   ) {
     return res
       .status(400)
@@ -40,7 +42,10 @@ flashcardRouter.post("/", async (req, res) => {
       data: {
         question,
         options: {
-          create: options,
+          create: options.map((option) => ({
+            text: option.text,
+            isCorrect: option.isCorrect || false,
+          })),
         },
         answer: {
           create: { heading, paragraph },
@@ -59,6 +64,27 @@ flashcardRouter.post("/", async (req, res) => {
 flashcardRouter.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { question, options, heading, paragraph } = req.body;
+  console.log(question, options, heading, paragraph);
+  if (
+    !question ||
+    !heading ||
+    question.trim().length === 0 ||
+    heading.trim().length === 0 ||
+    options.length > 4 ||
+    !(options.length > 0 && options.some((option) => option.isCorrect))
+  ) {
+    console.log(
+      !question,
+      !heading,
+      question.trim().length === 0,
+      heading.trim().length === 0,
+      options.length > 4,
+      options.length > 0 && options.some((option) => option.isCorrect)
+    );
+    return res
+      .status(400)
+      .json({ error: "Please provide all the required fields" });
+  }
 
   try {
     const flashcard = await prisma.flashcard.findUnique({
@@ -73,17 +99,28 @@ flashcardRouter.put("/:id", async (req, res) => {
       return res.status(404).json({ error: "Flashcard not found" });
     }
 
-    const existingOptionIds = flashcard.options.map((option) => option.id);
-    const providedOptionIds = options
+    // Get the IDs of the options before and after the update
+    const prevOptionIds = flashcard.options.map((option) => option.id);
+    const newOptionIds = options
       .filter((option) => option.id)
       .map((option) => option.id);
 
-    // Determine which options need to be added and which to remove
+    // Determine which options need to be added, updated, or removed
     const optionsToAdd = options.filter((option) => !option.id);
     const optionsToUpdate = options.filter((option) => option.id);
-    const optionsToRemove = existingOptionIds.filter(
-      (id) => !providedOptionIds.includes(id)
+    const optionsToRemove = prevOptionIds.filter(
+      (id) => !newOptionIds.includes(id)
     );
+
+    // Validate that exactly one option is correct
+    // const correctOptionsCount = options.filter(
+    //   (option) => option.isCorrect
+    // ).length;
+    // if (correctOptionsCount !== 1) {
+    //   return res
+    //     .status(400)
+    //     .json({ error: "There must be exactly one correct option." });
+    // }
 
     await prisma.$transaction(async (prisma) => {
       // Add new options
@@ -91,6 +128,7 @@ flashcardRouter.put("/:id", async (req, res) => {
         await prisma.option.createMany({
           data: optionsToAdd.map((option) => ({
             text: option.text,
+            isCorrect: option.isCorrect || false, // Default to false if not provided
             flashcardId: Number(id),
           })),
         });
@@ -100,7 +138,7 @@ flashcardRouter.put("/:id", async (req, res) => {
       for (const option of optionsToUpdate) {
         await prisma.option.update({
           where: { id: option.id },
-          data: { text: option.text },
+          data: { text: option.text, isCorrect: option.isCorrect || false },
         });
       }
 
