@@ -5,12 +5,7 @@ export const superfetch = async (url, options) => {
   if (!url.startsWith("http")) {
     url = BACKEND_URL + url;
   }
-  if (token && options) {
-    options.headers = {
-      ...options?.headers,
-      Authorization: token,
-    };
-  } else if (!options) {
+  if (!options) {
     options = {};
     options.headers = {
       Authorization: token,

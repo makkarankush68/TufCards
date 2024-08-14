@@ -66,7 +66,6 @@ export const AdminProvider = ({ children }) => {
       console.log("Validation failed");
       return;
     }
-    console.log(newFormData);
 
     try {
       const res = await superfetch("flashcards", {

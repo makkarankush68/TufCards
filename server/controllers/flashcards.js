@@ -31,7 +31,7 @@ flashcardRouter.post("/", async (req, res) => {
     question.trim().length === 0 ||
     heading.trim().length === 0 ||
     options.length > 4 ||
-    (options.length > 0 && options.some((option) => option.isCorrect))
+    (options.length > 0 && !options.some((option) => option.isCorrect))
   ) {
     return res
       .status(400)
@@ -64,23 +64,14 @@ flashcardRouter.post("/", async (req, res) => {
 flashcardRouter.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { question, options, heading, paragraph } = req.body;
-  console.log(question, options, heading, paragraph);
   if (
     !question ||
     !heading ||
     question.trim().length === 0 ||
     heading.trim().length === 0 ||
     options.length > 4 ||
-    !(options.length > 0 && options.some((option) => option.isCorrect))
+    (options.length > 0 && !options.some((option) => option.isCorrect))
   ) {
-    console.log(
-      !question,
-      !heading,
-      question.trim().length === 0,
-      heading.trim().length === 0,
-      options.length > 4,
-      options.length > 0 && options.some((option) => option.isCorrect)
-    );
     return res
       .status(400)
       .json({ error: "Please provide all the required fields" });
@@ -112,23 +103,13 @@ flashcardRouter.put("/:id", async (req, res) => {
       (id) => !newOptionIds.includes(id)
     );
 
-    // Validate that exactly one option is correct
-    // const correctOptionsCount = options.filter(
-    //   (option) => option.isCorrect
-    // ).length;
-    // if (correctOptionsCount !== 1) {
-    //   return res
-    //     .status(400)
-    //     .json({ error: "There must be exactly one correct option." });
-    // }
-
     await prisma.$transaction(async (prisma) => {
       // Add new options
       if (optionsToAdd.length > 0) {
         await prisma.option.createMany({
           data: optionsToAdd.map((option) => ({
             text: option.text,
-            isCorrect: option.isCorrect || false, // Default to false if not provided
+            isCorrect: option.isCorrect || false,
             flashcardId: Number(id),
           })),
         });

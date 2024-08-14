@@ -17,8 +17,7 @@ const AllCards = () => {
         options2: card.options[1]?.text || "",
         options3: card.options[2]?.text || "",
         options4: card.options[3]?.text || "",
-        correctOption:
-          card.options.find((option) => option.isCorrect)?.text || "",
+        correctOption: "",
         heading: card.answer[0].heading,
         paragraph: card.answer[0].paragraph || "",
       });
@@ -90,13 +89,12 @@ const AllCards = () => {
       if (res.ok) {
         alert("Flashcard Updated successfully");
         fetchCards();
+        setEdit(null);
       } else {
         alert("Failed to add flashcard");
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setEdit(null);
     }
   };
 

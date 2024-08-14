@@ -13,6 +13,10 @@ const FlipCard = ({ card }) => {
 
   const handleClick = () => {
     if (card.options.length <= 0) {
+      setCelebrate(true);
+      setTimeout(() => {
+        setCelebrate(false);
+      }, 3000);
       return setIsFlipped(!isFlipped);
     }
   };
@@ -22,7 +26,7 @@ const FlipCard = ({ card }) => {
       setCelebrate(true);
       setTimeout(() => {
         setCelebrate(false);
-      }, 2000);
+      }, 3000);
     } else {
       setWrong(true);
       setTimeout(() => {

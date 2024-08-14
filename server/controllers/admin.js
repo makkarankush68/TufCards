@@ -32,23 +32,19 @@ adminRouter.post("/login", async (req, res) => {
 
 // Admin signup
 adminRouter.post("/signup", async (req, res) => {
-  const { username, password } = req.body;
+  // const { username, password } = req.body;
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const admin = await prisma.admin.create({
-      data: {
-        username,
-        password: hashedPassword,
-      },
-    });
-    res.status(201).json(admin);
-    // res.status(201).json({
-    //   msg: "Admin signup is disabled for now. Please use the default admin credentials to login.",
-    //   credentials: {
-    //     username: "admin",
-    //     password: "admin",
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    // const admin = await prisma.admin.create({
+    //   data: {
+    //     username,
+    //     password: hashedPassword,
     //   },
     // });
+    // res.status(201).json(admin);
+    res.status(201).json({
+      msg: "Admin signup is disabled for now. Please use the default admin credentials to login.",
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
