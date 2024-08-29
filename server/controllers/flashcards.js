@@ -1,11 +1,6 @@
-const express = require("express");
 const prisma = require("../prisma/client");
-const authenticateJWT = require("../middleware/auth.middleware");
 
-const flashcardRouter = express.Router();
-
-// Get all flashcards with options and answers
-flashcardRouter.get("/", async (req, res) => {
+const getFlashcards = async (req, res) => {
   try {
     const flashcards = await prisma.flashcard.findMany({
       include: {
@@ -17,13 +12,9 @@ flashcardRouter.get("/", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
+};
 
-// Middleware to protect below routes
-flashcardRouter.use(authenticateJWT);
-
-// Add a new flashcard with admin info
-flashcardRouter.post("/", async (req, res) => {
+const addNewFlashcard = async (req, res) => {
   const { question, options, heading, paragraph } = req.body;
   if (
     !question ||
@@ -58,10 +49,9 @@ flashcardRouter.post("/", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
+};
 
-// Update a flashcard
-flashcardRouter.put("/:id", async (req, res) => {
+const updateFlashcard = async (req, res) => {
   const { id } = req.params;
   const { question, options, heading, paragraph } = req.body;
   if (
@@ -160,10 +150,9 @@ flashcardRouter.put("/:id", async (req, res) => {
     console.error("Error updating flashcard:", error);
     res.status(500).json({ error: error.message });
   }
-});
+};
 
-// Delete a flashcard
-flashcardRouter.delete("/:id", async (req, res) => {
+const deleteFlashcard = async (req, res) => {
   const { id } = req.params;
   try {
     const flashcard = await prisma.flashcard.findUnique({
@@ -191,6 +180,11 @@ flashcardRouter.delete("/:id", async (req, res) => {
     console.error("Error deleting flashcard:", error);
     res.status(500).json({ error: error.message });
   }
-});
+};
 
-module.exports = flashcardRouter;
+module.exports = {
+  getFlashcards,
+  addNewFlashcard,
+  updateFlashcard,
+  deleteFlashcard,
+};

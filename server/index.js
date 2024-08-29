@@ -1,8 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const adminRouter = require("./controllers/admin");
-const flashcardRouter = require("./controllers/flashcards");
+const adminRouter = require("./routes/admin");
+const flashcardRouter = require("./routes/flashcards");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,7 +15,6 @@ const corsOptions = {
   allowedHeaders: "Content-Type,Authorization",
 };
 app.use(cors(corsOptions));
-
 
 // Admin Routes
 app.use("/admin", adminRouter);
